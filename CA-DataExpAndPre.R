@@ -4,9 +4,19 @@
 #
 
 # Read csv
-data <- read.csv("C:/Users/henri/Documents/CA-DataExpAndPre/RecordedCrimeOffences.csv")
+data <- read.csv("C:/Users/henri/Documents/CA-DataExpAndPre/CovidVacRate.csv")
 
-# This dataset contains information about Recorded Crime Offences, which Gard Station it was recorded
-# And which crime was comitted.
+# This dataset contains information about vaccination rates over Ireland
+
 # Display data
-head (data)
+head(data)
+
+# Check structure
+str(data)
+
+# Check missing values
+sapply(data, function(x) sum(is.na(x)))
+
+# Min-Max Normalization
+data$VALUE_MinMax <- (data$VALUE - min(data$VALUE)) / (max(data$VALUE) - min(data$VALUE))
+
