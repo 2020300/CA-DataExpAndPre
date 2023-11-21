@@ -14,9 +14,26 @@ head(data)
 # Check structure
 str(data)
 
-# Check missing values
-sapply(data, function(x) sum(is.na(x)))
 
-# Min-Max Normalization
-data$VALUE_MinMax <- (data$VALUE - min(data$VALUE)) / (max(data$VALUE) - min(data$VALUE))
+
+install.packages("devtools")
+devtools::install_github("ropensci/skimr")
+
+library(ggplot2)
+library(skimr)
+skimr::skim(data)
+
+data$Age <- as.numeric(data$Age.Group)
+str(data)
+
+
+
+# Replace '5 - 11 years' with random ages between 5 and 11
+data$Age.Group <- ifelse(data$`Age.Group` == '5 - 11 years',
+                 sample(5:11, sum(data$`Age.Group` == '5 - 11 years'), replace = TRUE),
+                 data$Age.Group)
+
+# Viewing the updated 'Age' column
+head(data$Age.Group)
+
 
