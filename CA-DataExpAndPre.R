@@ -9,6 +9,7 @@ library(ggplot2)
 library(skimr)
 library(tidyr)
 library(scales)
+library(GGally)
 
 
 # Read csv
@@ -101,34 +102,48 @@ cat("Maximum of VALUE:", max_Value, "\n")
 cat("Standard Deviation of VALUE:", sd_Value, "\n")
 
 
-# Calculate mix-max normalization
-
 # Numerical variables
-numerical_variables <- c("Age.Group", "VALUE")
+numerical_variables <- c("Age.Group")
 
 # Min-Max Normalization
-minmax_values <- lapply(data[, numerical_variables], function(col) (col - min(col, na.rm = TRUE)) / (max(col, na.rm = TRUE) - min(col, na.rm = TRUE)))
+minmax_values <- (data[, column_name] - min(data[, column_name], na.rm = TRUE)) /
+  (max(data[, column_name], na.rm = TRUE) - min(data[, column_name], na.rm = TRUE))
 
 # Z-score Standardization
-zscore_values <- lapply(data[, numerical_variables], scale)
+zscore_values <- scale(data[, column_name])
 
 # Robust Scaling
-robust_values <- lapply(data[, numerical_variables], function(col) (col - median(col, na.rm = TRUE)) / IQR(col, na.rm = TRUE))
+robust_values <- (data[, column_name] - median(data[, column_name], na.rm = TRUE)) / IQR(data[, column_name], na.rm = TRUE)
 
 # Display the transformed values
 cat("Min-Max Normalization:\n")
-print(minmax_values)
+#print(minmax_values)
+hist(data$Age.Group, type = "l", main = "Original Values", xlab = "Index", ylab = "Original Line Plot")
+hist(minmax_values, type = "l", main = " After Min-Max Normalization", xlab = "Index", ylab = "Min-Max Normalized Scale")
+
 
 cat("\nZ-score Standardization:\n")
-print(zscore_values)
+#print(zscore_values)
+hist(data$Age.Group, main = "Original values", ylab = "")
+# Boxplot for z-score normalized values
+hist(zscore_values, main = "Z-Score Normalized Values", ylab = "Z-Score")
+
 
 cat("\nRobust Scaling:\n")
 print(robust_values)
+hist(data$Age.Group, main = "Original values", ylab = "")
+hist(robust_values, main = "Robust Scaling Values", ylab = "Robust Scaling")
 
+data_2 <- cbind(data$Age.Group, data$Vaccination_Code)    
+ggpairs(data_2)
 
+corr_coefficients = data_2
+corr_coefficients
 
-# Create a line plot
-ggplot(data, aes(x = seq_along(minmax_values), y = (minmax_values))) +
-  geom_line() +
-  labs(title = "Min-Max Normalization of C02076V03371", x = "Observation", y = "Normalized Value")
+heatmap(corr_coefficients)
 
+# Calculate the correlation matrix
+cor_matrix <- cor(data_2, use = "complete.obs")
+
+# Create a correlation heatmap
+corrplot(cor_matrix, method = "color", title = "Correlation Heatmap")
