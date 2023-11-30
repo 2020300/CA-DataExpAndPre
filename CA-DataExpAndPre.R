@@ -10,7 +10,7 @@ library(skimr)
 library(tidyr)
 library(scales)
 library(GGally)
-
+library(dplyr)
 
 # Read csv
 data <- read.csv("C:/Users/henri/Documents/CA-DataExpAndPre/CovidVacRate.csv")
@@ -147,3 +147,20 @@ cor_matrix <- cor(data_2, use = "complete.obs")
 
 # Create a correlation heatmap
 corrplot(cor_matrix, method = "color", title = "Correlation Heatmap")
+
+
+# Plot graph created to see which Month people were most vaccinated
+ggplot(data = data) + 
+  geom_bar(aes(x = Month))
+
+# Explore which month people under 20 and over 35 have been vaccinated
+data_u20 <- data[data$Age.Group <= 20, ]
+data_o35 <- data[data$Age.Group >= 35, ]
+
+# Plot for people under 20 years old
+ggplot(data = data_u20) + 
+  geom_bar(aes(x = Month))
+
+# Plot for people over 35 years old
+ggplot(data = data_o35) + 
+  geom_bar(aes(x = Month))
