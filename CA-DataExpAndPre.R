@@ -1,7 +1,7 @@
-# CA - 
-# Lecturer's Name: 
-# Student Name:
-#
+# CA - Data Exploration and Visualization
+# Lecturer's Name: Muhammad Iqtal
+# Student Name: Pedro Henrique Simoes Marcal
+# Student Number: 2020300
 
 #Import libraries needed
 library(lubridate)
@@ -15,7 +15,7 @@ library(dplyr)
 # Read csv
 data <- read.csv("C:/Users/henri/Documents/CA-DataExpAndPre/CovidVacRate.csv")
 
-# This dataset contains information about vaccination rates over Ireland
+# This dataset contains information about vaccination rates over Ireland in the year of 2021
 
 # Using skmir to understand the data: 
 skimr::skim(data)
@@ -29,7 +29,6 @@ head(data)
 str(data)
 
 ## DATA PREPARING ##
-
 # Fixing VALUE column by replacing NA values with 0
 column_name <- "VALUE" 
 data[[column_name]][is.na(data[[column_name]])] <- 0
