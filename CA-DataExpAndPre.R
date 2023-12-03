@@ -23,7 +23,6 @@ skimr::skim(data)
 # Since we have way too many columns, I will store the first 7500 columns and store in a different dataset
 data <- head(data, 7500)
 # Display data
-
 head(data)
 
 # Check structure
@@ -141,12 +140,15 @@ hist(robust_values, main = "Robust Scaling Values", ylab = "Robust Scaling")
 # End of Task C 
 
 # Task D - Heatmaps and correlation
+# Combine columns needed
 data_2 <- cbind(data$Age.Group, data$Vaccination_Code)    
 ggpairs(data_2)
 
+# Calculate correlation coefficients
 corr_coefficients = data_2
 corr_coefficients
 
+# Create heat map
 heatmap(corr_coefficients)
 
 # Calculate the correlation matrix
@@ -168,12 +170,27 @@ data_o35 <- data[data$Age.Group >= 35, ]
 
 # Plot for people under 20 years old
 ggplot(data = data_u20) + 
-  # geom_bar(aes(x = Month))
-
 geom_density(aes(x = Month)) +
   labs(title = "Density Plot of Numerical Variable for People Under 20", x = "Numerical Variable", y = "Density")
 
 # End of the Task E
 
 # Task F - PCA
-# Scale the date
+# Scale the data
+numeric_columns <- data[, c(8, 11)]
+scaled_data <- scale(numeric_columns)
+print(scaled_data)
+
+# Perform the PCA
+pca_result <- prcomp(scaled_data, center = TRUE, scale. = TRUE)
+print(pca_result)
+summary(pca_result)
+
+# Visualize results with plot graph
+plot(pca_result, type = "l")
+
+# Access the principal components
+principal_components <- pca_result$x
+plot(principal_components)
+
+# End of the Task F
