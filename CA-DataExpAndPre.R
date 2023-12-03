@@ -53,7 +53,8 @@ head(data$Age.Group)
 data <- separate(data, Month, into = c("Year", "Month"), sep = " ")
 
 # Assign "Fully Vaccinated" as 1 and not Fully Vaccinated 2, to make it easier to manipulate the data
-data$Vaccination_Code <- ifelse(data$Statistic.Label == "Fully Vaccinated", 1, 2)
+data$Vaccination_Code <- ifelse(data$Statistic.Label == "Fully Vaccinated", 0, 1)
+tail(data$Vaccination_Code)
 
 # Transform age and other columns with wrong formation into numeric value
 data$Age.Group <- as.numeric(data$Age.Group)
@@ -72,6 +73,7 @@ summary(data)
 # Now we age, month and year fixed we can start manipulating our data
 hist(data$Vaccination_Code, xlab = "Vaccination_Code", main = "Age Distribution")
 
+#Task B - Calculate mean, median, minimum, maximum and sd 
 
 # Calculate mean, median, minimum, maximum, and standard deviation for Age
 mean_Age <- mean(data$Age.Group)
@@ -101,7 +103,9 @@ cat("Minimum of VALUE:", min_Value, "\n")
 cat("Maximum of VALUE:", max_Value, "\n")
 cat("Standard Deviation of VALUE:", sd_Value, "\n")
 
+# End of Task B
 
+# Task C - MinMax Normalization, Z-Score Standardization and Robust Scaling
 # Numerical variables
 numerical_variables <- c("Age.Group")
 
@@ -134,6 +138,9 @@ print(robust_values)
 hist(data$Age.Group, main = "Original values", ylab = "")
 hist(robust_values, main = "Robust Scaling Values", ylab = "Robust Scaling")
 
+# End of Task C 
+
+# Task D - Heatmaps and correlation
 data_2 <- cbind(data$Age.Group, data$Vaccination_Code)    
 ggpairs(data_2)
 
@@ -148,7 +155,9 @@ cor_matrix <- cor(data_2, use = "complete.obs")
 # Create a correlation heatmap
 corrplot(cor_matrix, method = "color", title = "Correlation Heatmap")
 
+# End of the task D
 
+# Task E - Create graphs to explore data
 # Plot graph created to see which Month people were most vaccinated
 ggplot(data = data) + 
   geom_bar(aes(x = Month))
@@ -159,8 +168,12 @@ data_o35 <- data[data$Age.Group >= 35, ]
 
 # Plot for people under 20 years old
 ggplot(data = data_u20) + 
-  geom_bar(aes(x = Month))
+  # geom_bar(aes(x = Month))
 
-# Plot for people over 35 years old
-ggplot(data = data_o35) + 
-  geom_bar(aes(x = Month))
+geom_density(aes(x = Month)) +
+  labs(title = "Density Plot of Numerical Variable for People Under 20", x = "Numerical Variable", y = "Density")
+
+# End of the Task E
+
+# Task F - PCA
+# Scale the date
