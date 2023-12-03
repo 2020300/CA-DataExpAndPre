@@ -174,7 +174,7 @@ geom_density(aes(x = Month)) +
 
 # End of the Task E
 
-# Task F - PCA
+# Task G - PCA
 # Scale the data
 numeric_columns <- data[, c(8, 11)]
 scaled_data <- scale(numeric_columns)
